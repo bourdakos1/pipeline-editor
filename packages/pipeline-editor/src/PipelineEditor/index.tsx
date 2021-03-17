@@ -38,7 +38,6 @@ import { IntlProvider } from "react-intl";
 import {
   DefaultTheme,
   ThemeProvider as InternalThemeProvider,
-  useTheme,
 } from "styled-components";
 
 import NodeTooltip from "../NodeTooltip";
@@ -127,9 +126,6 @@ const PipelineEditor = forwardRef(
     }: Props,
     ref
   ) => {
-    const theme = useTheme();
-    console.log(theme);
-
     const controller = useRef(new PipelineController());
 
     const [currentTab, setCurrentTab] = useState<string | undefined>();
@@ -668,15 +664,15 @@ const ThemeProvider: React.FC<{ theme: Partial<DefaultTheme> }> = ({
   );
 };
 
-function ThemedPipelineEditor(props: Props) {
+const ThemedPipelineEditor = forwardRef((props: Props, ref) => {
   return (
     <ThemeProvider theme={theme}>
       <InternalThemeProvider theme={createTheme}>
         <CanvasOverrides />
-        <PipelineEditor {...props} />
+        <PipelineEditor {...props} ref={ref} />
       </InternalThemeProvider>
     </ThemeProvider>
   );
-}
+});
 
 export default ThemedPipelineEditor;
